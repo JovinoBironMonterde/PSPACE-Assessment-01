@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Equation Calculation</title>
+</head>
+<body>
+  <div class="Direct-Implementation-Wrapper">
+    <h5>Results for Direct Implementation:</h5>
+    <span></span>
+  </div>
+  <div class="Optimized-Implementation-Wrapper">
+    <h5>Results for Optimized Implementation:</h5>
+    <span></span>
+  </div>
+
+  <script>
+    // Function for the direct calculation of x(w, n)
+    function calculateX(w, n) {
+      let result = 0;
+
+      for (let i = 1; i <= n; i++) {
+
+        for (let j = Math.max(1, i - w); j < i; j++) { 
+          for (let k = j + 1; k < i; k++) { 
+            result += 1;
+          }
+        }
+
+        for (let j = i + 1; j <= Math.min(n, i + w); j++) { 
+          result += 1;
+        }
+      }
+      return result;
+    }
+
+    // Function for the Optimized calculation of x(w, n)
+    function calculateXOptimized(w, n) {
+      let result = 0;
+
+      for (let i = 1; i <= n; i++) {
+        let start = Math.max(1, i - w);
+        let count = i - start; 
+        result += (count * (count - 1)) / 2; 
+        result += Math.min(w, n - i); 
+      }
+      return result;
+    }
+
+    const testCases = [
+      [3, 5], // Expected: 14
+      [4, 7], // Expected: 44
+      [5, 9], // Expected: 100
+    ];
+
+    const directResults = testCases.map(([w, n]) => `x(${w}, ${n}) = ${calculateX(w, n)}`).join('<br>');
+    const optimizedResults = testCases.map(([w, n]) => `x(${w}, ${n}) = ${calculateXOptimized(w, n)}`).join('<br>');
+
+    document.querySelector('.Direct-Implementation-Wrapper span').innerHTML = directResults;
+    document.querySelector('.Optimized-Implementation-Wrapper span').innerHTML = optimizedResults;
+  </script>
+</body>
+</html>
